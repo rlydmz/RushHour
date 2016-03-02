@@ -4,14 +4,14 @@
 
 struct piece_s{
 
-    //x représente l'abscisse du coté inférieur gauche de la piece
+    //x reprÃ©sente l'abscisse du cotÃ© infÃ©rieur gauche de la piece
     int x;
-    //y représente lordonnee du coté inférieur gauche de la piece
+    //y reprÃ©sente lordonnee du cotÃ© infÃ©rieur gauche de la piece
     int y;
     //si estPetite == true, la piece sera petite, sinon et sera grande
     bool estPetite;
-    //si bougeHorizontalement == true, la piece ne pourra bouger que dans l'horizontalité
-    //sinon elle ne pourra bouger que dans la verticalité
+    //si bougeHorizontalement == true, la piece ne pourra bouger que dans l'horizontalitÃ©
+    //sinon elle ne pourra bouger que dans la verticalitÃ©
     bool bougeHorizontalement;
 
 };
@@ -153,6 +153,11 @@ int get_width(cpiece p){
     }
 
     return 0;
+}
+
+bool is_horizontal(cpiece p){
+    
+    return (*p).bougeHorizontalement;
 }
 
 }
