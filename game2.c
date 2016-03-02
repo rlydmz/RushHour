@@ -5,13 +5,13 @@
 #include "piece.h"
 
 struct game{
-  piece pieces[nbPieces];
+  piece pieces[];
   int nbMoves;
   int nbPieces;
 };
 
 struct cgame{
-  piece pieces[nbPieces];
+  piece pieces[];
   int nbMoves;
   int nbPieces;
 };
