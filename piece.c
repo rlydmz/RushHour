@@ -1,163 +1,154 @@
-#include "piece.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
+#include "piece.h"
 
 struct piece_s{
-
-    //x représente l'abscisse du coté inférieur gauche de la piece
-    int x;
-    //y représente lordonnee du coté inférieur gauche de la piece
-    int y;
-    //si estPetite == true, la piece sera petite, sinon et sera grande
-    bool estPetite;
-    //si bougeHorizontalement == true, la piece ne pourra bouger que dans l'horizontalité
-    //sinon elle ne pourra bouger que dans la verticalité
-    bool bougeHorizontalement;
-
+  int x; //coordonnée x de la position du véhicule(coin sup gauche)
+  int y; //coordonnée y de la position du véhicule(coin sup gauche)
+  bool small; //si true voiture, si faux camion
+  bool horizontal; //si true bouge horizontalement, si faux verticalement
 };
 
-piece new_piece_rh (int x, int y, bool small, bool horizontal){
 
-    piece p = malloc(sizeof(struct piece_s));
-    (*p).x = x;
-    (*p).y = y;
-    (*p).estPetite = small;
-    (*p).bougeHorizontalement = horizontal;
-    return p;
 
+piece new_piece_rh(int x, int y, bool small, bool h){
+  piece p = malloc(sizeof(struct piece_s));
+  p->x = x;
+  p->y = y;
+  p->small = small;
+  p->horizontal = h;
+  return p;
 }
 
+
 void delete_piece (piece p){
-
-        free(p);
-
+  if(p!=NULL)
+    free(p);
 }
 
 void copy_piece (cpiece src, piece dst){
+  if(src != NULL && dst != NULL){
+    dst->x = src->x;
+    dst->y = src->y;
+    dst->small = src->small;
+    dst->horizontal = src->horizontal;
+  }
+}
 
-    if(src!=NULL && dst!=NULL){
-        (*dst).x = (*src).x;
-        (*dst).y = (*src).y;
-        (*dst).estPetite = (*src).estPetite;
-        (*dst).bougeHorizontalement = (*src).bougeHorizontalement;
-    }
-
-void move_piece (piece p, dir d, int distance){
-
-    if(p!=NULL && distance>0 && d!=NULL){
-        if((*p).bougeHorizontalement == true){
-            if(d==LEFT){
-               (*p).y -= distance;
-            }
-            if(d==RIGHT){
-               (*p).y += distance;
-            }
-        }
-        else if((*p).bougeHorizontalement == false){
-            if(d==UP){
-                (*p).x += distance;
-            }
-            if(d==DOWN){
-                (*p).x -= distance;
-            }
-        }
+void move_piece(piece p, dir d, int distance){
+    if(p!=NULL && is_horizontal(p)== d && distance !=0 && d != NULL){
+            if(d == DOWN || d ==UP)
+                p->x += distance;
+            else if(d == LEFT || d == RIGHT)
+                p->y += distance;
     }
 }
 
-bool intersect(cpiece p1, cpiece p2){
-/*
-    if(p1!=NULL && p2!=NULL){
 
-        int nbCoteEnCommun = 0;
-        int hauteurp1 = get_height(p1);
-        int hauteurp2 = get_height(p2);
-        int largeurp1 = get_width(p1);
-        int largeurp2 = get_width(p2);
-
-        int cptMax1, cptMax2;
-
-        if(hauteurp1==2 || largeurp1==2)
-            cptMax1 = 6;
-        else if(hauteurp1==3 || largeurp1==3)
-            cptMax1 = 8;
-
-        if(hauteurp2==2 || largeurp2==2)
-            cptMax2 = 6;
-        else if(hauteurp2==3 || largeurp2==3)
-            cptMax2 = 8;
-
-        for(int i=0; i<cptMax1; i++){
-            for(int j=0; j<cptMax2; j++){
-
-
-               if(get_x(p1) == get_x(p2) && get_y(p1) == get_y(p2))
-                    nbCoteEnCommun++;
-
-            }
-        }
-
-
-    }
-*/
-}
-
-
+/**
+ * @brief Returns the abscissa of leftmost point of the piece p.
+ */
 int get_x(cpiece p){
-
     if(p!=NULL)
-        return (*p).x;
-
-    return 0;
-
+        return p->x;
 }
 
+/**
+ * @brief Returns the ordinate of lowest point of the piece p.
+ */
 int get_y(cpiece p){
-
     if(p!=NULL)
-        return (*p).y;
-
-    return 0;
+        return p->y;
 }
 
+/**
+ * @brief Returns the different of ordinates of the uppermost and the lowest points of the piece p.
+ */
 int get_height(cpiece p){
-
     if(p!=NULL){
-        if((*p).bougeHorizontalement ==  true)
+        if(is_horizontal(p))
             return 1;
         else{
-            if((*p).estPetite ==  true)
+            if(p->small)
                 return 2;
             else
                 return 3;
+
         }
-
     }
+    else
+        return -1;
 
-    return 0;
 }
 
+/**
+ * @brief Returns the different of abscissas of the leftmost and the rightmost points of the piece p.
+ */
 int get_width(cpiece p){
 
     if(p!=NULL){
-        if((*p).bougeHorizontalement ==  true){
-            if((*p).estPetite ==  true)
+        if(!is_horizontal(p))
+            if(p->small)
                 return 2;
             else
                 return 3;
-        }
-
         else{
-                return 1;
+            return 1;
         }
-
     }
-
-    return 0;
+    else
+        return -1;
 }
 
 bool is_horizontal(cpiece p){
-    
-    return (*p).bougeHorizontalement;
+    if(p->horizontal)
+        return true;
+    return false;
 }
 
-}
+bool intersect(cpiece p1, cpiece p2){
+
+  int taillep1 = get_width(p1) * get_height(p1);
+  int taillep2 = get_width(p2) * get_height(p2);
+
+  int coordp1[3][2];
+  int coordp2[3][2];
+
+  if(is_horizontal(p1)){
+    for(int i=0; i<taillep1; i++){
+      coordp1[i][0] = p1->x + i;
+      coordp1[i][1] = p1->y;
+    }
+  }
+  else{
+    for(int i=0; i<taillep1; i++){
+      coordp1[i][0] = p1->x;
+      coordp1[i][1] = p1->y + i;
+    }
+  }
+
+  if(is_horizontal(p2)){
+    for(int i=0; i<taillep2; i++){
+      coordp2[i][0] = p2->x + i;
+      coordp2[i][1] = p2->y;
+    }
+  }
+  else{
+    for(int i=0; i<taillep2; i++){
+      coordp2[i][0] = p2->x;
+      coordp2[i][1] = p2->y + i;
+    }
+  }
+
+  for(int i=0; i<taillep1; i++){
+    for(int j=0; j<taillep2; j++){
+      if(coordp1[i][0] == coordp2[j][0] && coordp1[i][1] == coordp2[j][1]
+	 return true;
+    }
+  }
+
+    return false;
+
+};
+
