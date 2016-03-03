@@ -37,11 +37,23 @@ void copy_piece (cpiece src, piece dst){
 }
 
 void move_piece(piece p, dir d, int distance){
-    if(p!=NULL && is_horizontal(p)== d && distance !=0 && d != NULL){
-            if(d == DOWN || d ==UP)
-                p->x += distance;
-            else if(d == LEFT || d == RIGHT)
-                p->y += distance;
+    if(p!=NULL && distance !=0 ){
+            if(!is_horizontal(p)){
+                if(d == DOWN){
+                    p->y -= distance;
+                }
+                else if(d == UP){
+                    p->y += distance;
+                }
+            }
+            else{
+                if(d == LEFT){
+                    p->x -= distance;
+                }
+                else if(d == RIGHT){
+                    p->x += distance;
+                }
+            }
     }
 }
 
@@ -50,7 +62,6 @@ void move_piece(piece p, dir d, int distance){
  * @brief Returns the abscissa of leftmost point of the piece p.
  */
 int get_x(cpiece p){
-    if(p!=NULL)
         return p->x;
 }
 
@@ -58,7 +69,6 @@ int get_x(cpiece p){
  * @brief Returns the ordinate of lowest point of the piece p.
  */
 int get_y(cpiece p){
-    if(p!=NULL)
         return p->y;
 }
 
@@ -89,12 +99,12 @@ int get_width(cpiece p){
 
     if(p!=NULL){
         if(!is_horizontal(p))
+            return 1;
+        else{
             if(p->small)
                 return 2;
             else
                 return 3;
-        else{
-            return 1;
         }
     }
     else
@@ -143,7 +153,7 @@ bool intersect(cpiece p1, cpiece p2){
 
   for(int i=0; i<taillep1; i++){
     for(int j=0; j<taillep2; j++){
-      if(coordp1[i][0] == coordp2[j][0] && coordp1[i][1] == coordp2[j][1]
+      if(coordp1[i][0] == coordp2[j][0] && coordp1[i][1] == coordp2[j][1])
 	 return true;
     }
   }
@@ -151,4 +161,3 @@ bool intersect(cpiece p1, cpiece p2){
     return false;
 
 };
-

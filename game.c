@@ -65,7 +65,10 @@ cpiece game_piece(cgame g, int piece_num){
 bool game_over_hr(cgame g){
     int x = get_x(g->p[0]);
     int y = get_y(g->p[0]);
-
+    if(x==4 && y==3)
+        return true;
+    else
+        return false;
 
 }
 
@@ -83,11 +86,45 @@ bool game_over_hr(cgame g){
  * @param piece_num the number of the piece to move. This value must be between 0 and game_nb_pieces(g)-1.
  * @return true if the move is valid, false otherwise.
 */
-bool play_move(game g, int piece_num, dir d, int distance);
+//bool play_move(game g, int piece_num, dir d, int distance){
+//    piece p2 = new_piece_rh(10,10,true,true);
+//    copy_piece(g->p[piece_num],p2);
+//
+//
+//    /**si le mouvement fait sortir la piece**/
+//    if(get_x(g->p[0])+distance > 6)
+//        fprintf(stderr,"Out of bounds");
+//
+//    /**direction mauvaise pour mouvement**/
+//    if(is_horizontal(g->p[piece_num])){
+//        if(d!=LEFT || d!=RIGHT)
+//            return false;
+//
+//    /****/
+//    int j = 1;
+//    for(int i = 0; i < (g->nb_pieces) && (j<=distance) ;i++){
+//        p2->x += j;
+//        intersect(p2,g->p[i]);
+//        j++;
+//    }
+//
+//
+//
+//    }
+//    else if(!is_horizontal(g->p[piece_num])){
+//        if(d!=UP || d!=DOWN)
+//            return false;
+//    }
+//
+//
+//}
+
 
 /**
  * @brief Return the number of moves this the beginning of the game g.
  * Remind that move of a single piece of k cells in a single direction counts for k.
  */
-int game_nb_moves(cgame g);
+int game_nb_moves(cgame g){
+    return g->moves;
+}
 
