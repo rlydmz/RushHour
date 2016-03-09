@@ -172,14 +172,14 @@ bool intersect(cpiece p1, cpiece p2){
       }
     }
     else if(p2->width < p2->height){
-       for(int i=0; i<taillep_2; i++){
+       for(int i=0; i<taille_p2; i++){
            coord_p2[i][0] = p2->x;
            coord_p2[i][1] = p2->y + i;
        }
     }
     
     else if (p2->width == p2->height) {
-      for(int i=0; i < taille_p1; i++) {
+      for(int i=0; i < taille_p2; i++) {
 	coord_p2[i][0] = p2->x + i;
 	coord_p2[i][1] = p2->y + i; 
       }
