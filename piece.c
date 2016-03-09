@@ -24,11 +24,11 @@ piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y) 
     return p;
 }
 
-piece new_piece_rh(int x, int y, bool small, bool h){
+piece new_piece_rh(int x, int y, bool small, bool horizontal){
     piece p = malloc(sizeof(struct piece_s));
     p->x = x;
     p->y = y;
-    if(h==true){
+    if(horizontal==true){
       p->move_x = true;
       p->move_y = false;
       if(small==true){
@@ -130,12 +130,12 @@ bool is_horizontal(cpiece p){
     return false;
 }
 
-bool can_moove_x(cpiece p) { // a faire
-    return 0;
+bool can_move_x(cpiece p) { 
+  return move_x;
 }
 
-bool can_moove_y(cpiece p) { // a faire
-    return 0;
+bool can_move_y(cpiece p) { // a faire
+    return move_y;
 }
 
 bool intersect(cpiece p1, cpiece p2){
@@ -182,3 +182,4 @@ bool intersect(cpiece p1, cpiece p2){
     return false;
     
 }
+
