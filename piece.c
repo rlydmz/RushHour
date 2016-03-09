@@ -131,11 +131,11 @@ bool is_horizontal(cpiece p){
     }  
 
 bool can_move_x(cpiece p) { 
-  return move_x;
+  return p->move_x;
 }
 
-bool can_move_y(cpiece p)
-    return move_y;
+bool can_move_y(cpiece p) {
+    return p->move_y;
 }
 
 
@@ -159,12 +159,12 @@ bool intersect(cpiece p1, cpiece p2){
 	coord_p1[i][1] = p1->y + i;
       }
     }
-     else if (p1->width == p1->height) {
+    else if (p1->width == p1->height) {
        for(int i = 0; i < taille_p1; i++) {
 	 coord_p1[i][0] = p1->x + i;
 	 coord_p1[i][1] = p2->y + i;
       } 
-    
+    }
     if (p2->width > p2->height) {
       for(int i=0; i<taille_p2; i++){
 	coord_p2[i][0] = p2->x + i;
