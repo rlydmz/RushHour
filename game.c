@@ -12,17 +12,6 @@ typedef struct game_s{
     piece p[];
 };
 
-//game new_game_hr(int nb_pieces, piece *pieces){
-//    game g = malloc(sizeof(struct game_s));
-//    g->moves = 0;
-//    g->nb_pieces = nb_pieces;
-//    for (int i=0; i<nb_pieces ;i++){
-//        g->p[i] = pieces[i];
-//        copy_piece(g->p[i],pieces[i]);
-//    }
-//    return g;
-//}
-
 void delete_game (game g){
     if(g!=NULL)
         free(g);
@@ -126,7 +115,7 @@ int game_square_piece (game g, int x, int y){
         else num_piece = i; // seul cas restant, le carre est sur la piece i (et donc sur aucune autre piece)
     }
 
-    return num_piece; // -1 si
+    return num_piece;
 }
 
 
