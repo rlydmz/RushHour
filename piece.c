@@ -124,62 +124,77 @@ int get_width(cpiece p){
     return p->width;
 }
 
-bool is_horizontal(cpiece p){
+/* bool is_horizontal(cpiece p){
     if(p->width > p->height)
         return true;
     return false;
-}
+    }  PLUS UTILE  */
 
 bool can_move_x(cpiece p) { 
   return move_x;
 }
 
-bool can_move_y(cpiece p) { // a faire
+bool can_move_y(cpiece p)
     return move_y;
 }
 
+
 bool intersect(cpiece p1, cpiece p2){
     
-    int taillep1 = get_width(p1) * get_height(p1);
-    int taillep2 = get_width(p2) * get_height(p2);
+    int taille_p1 = get_width(p1) * get_height(p1);
+    int taille_p2 = get_width(p2) * get_height(p2);
     
-    int coordp1[3][2];
-    int coordp2[3][2];
+    int coord_p1[3][3];
+    int coord_p2[3][3];
     
-    if(is_horizontal(p1)){
-        for(int i=0; i<taillep1; i++){
-            coordp1[i][0] = p1->x + i;
-            coordp1[i][1] = p1->y;
-        }
+    if (p1->width > p1->height){
+      for(int i=0; i<taille_p1; i++){
+	coord_p1[i][0] = p1->x + i;
+	coord_p1[i][1] = p1->y;
+      }
     }
-    else{
-        for(int i=0; i<taillep1; i++){
-            coordp1[i][0] = p1->x;
-            coordp1[i][1] = p1->y + i;
-        }
+    else if (p1->width < p1->height){
+      for(int i=0; i<taille_p1; i++){
+	coord_p1[i][0] = p1->x;
+	coord_p1[i][1] = p1->y + i;
+      }
+    }
+     else if (p1->width == p1->height) {
+       for(int i = 0; i < taille_p1; i++) {
+	 coord_p1[i][0] = p1->x + i;
+	 coord_p1[i][1] = p2->y + i;
+      } 
+    
+    if (p2->width > p2->height) {
+      for(int i=0; i<taille_p2; i++){
+	coord_p2[i][0] = p2->x + i;
+	coord_p2[i][1] = p2->y;
+      }
+    }
+    else if(p2->width < p2->height){
+       for(int i=0; i<taillep_2; i++){
+           coord_p2[i][0] = p2->x;
+           coord_p2[i][1] = p2->y + i;
+       }
     }
     
-    if(is_horizontal(p2)){
-        for(int i=0; i<taillep2; i++){
-            coordp2[i][0] = p2->x + i;
-            coordp2[i][1] = p2->y;
-        }
-    }
-    else{
-        for(int i=0; i<taillep2; i++){
-            coordp2[i][0] = p2->x;
-            coordp2[i][1] = p2->y + i;
-        }
-    }
-    
-    for(int i=0; i<taillep1; i++){
-        for(int j=0; j<taillep2; j++){
-            if(coordp1[i][0] == coordp2[j][0] && coordp1[i][1] == coordp2[j][1])
-                return true;
-        }
+    else if (p2->width == p2->height) {
+      for(int i=0; i < taille_p1; i++) {
+	coord_p2[i][0] = p2->x + i;
+	coord_p2[i][1] = p2->y + i; 
+      }
+      } 
+	
+    for(int i=0; i<taille_p1; i++){
+      for(int j=0; j<taille_p2; j++){
+	if(coord_p1[i][0] == coord_p2[j][0] && coord_p1[i][1] == coord_p2[j][1])
+	  return true;
+      }
     }
     
     return false;
-    
-}
+} 
+
+
+
 
