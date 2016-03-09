@@ -183,7 +183,7 @@ bool intersect(cpiece p1, cpiece p2){
 	coord_p2[i][0] = p2->x + i;
 	coord_p2[i][1] = p2->y + i; 
       }
-      } 
+    } 
 	
     for(int i=0; i<taille_p1; i++){
       for(int j=0; j<taille_p2; j++){
