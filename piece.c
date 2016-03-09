@@ -124,11 +124,11 @@ int get_width(cpiece p){
     return p->width;
 }
 
-/* bool is_horizontal(cpiece p){
+bool is_horizontal(cpiece p){
     if(p->width > p->height)
         return true;
     return false;
-    }  PLUS UTILE  */
+    }  
 
 bool can_move_x(cpiece p) { 
   return move_x;
