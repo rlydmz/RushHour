@@ -201,28 +201,19 @@ bool test_move_ane() {
     for (int i=0; i < NB_PIECES; i++) {
       copy_piece(pieces_ane[i],p);
       move_piece(p, LEFT, dist);
-      if (is_horizontal(pieces[i]))
-        result = result && test_equality_int(get_x(pieces[i])-dist,get_x(p),"move LEFT");
-      else
-        result = result && test_equality_int(get_x(pieces[i]),get_x(p),"move LEFT");
-      copy_piece(pieces[i],p);
+      result = result && test_equality_int(get_x(pieces_ane[i])-dist,get_x(p),"move LEFT");
+      copy_piece(pieces_ane[i],p);
+      
       move_piece(p, RIGHT, dist);
-      if (is_horizontal(pieces[i]))
-        result = result && test_equality_int(get_x(pieces[i])+dist,get_x(p),"move RIGHT");
-      else
-        result = result && test_equality_int(get_x(pieces[i]),get_x(p),"move RIGHT");
-      copy_piece(pieces[i],p);
+      result = result && test_equality_int(get_x(pieces_ane[i])+dist,get_x(p),"move RIGHT");
+      copy_piece(pieces_ane[i],p);
+      
       move_piece(p, UP, dist);
-      if (!is_horizontal(pieces[i]))
-        result = result && test_equality_int(get_y(pieces[i])+dist,get_y(p),"move UP");
-      else
-        result = result && test_equality_int(get_y(pieces[i]),get_y(p),"move UP");
-      copy_piece(pieces[i],p);
+      result = result && test_equality_int(get_y(pieces_ane[i])+dist,get_y(p),"move UP");
+      copy_piece(pieces_ane[i],p);
+      
       move_piece(p, DOWN, dist);
-      if (!is_horizontal(pieces[i]))
-        result = result && test_equality_int(get_y(pieces[i])-dist,get_y(p),"move DOWN");
-      else
-        result = result && test_equality_int(get_y(pieces[i]),get_y(p),"move DOWN");
+      result = result && test_equality_int(get_y(pieces_ane[i])-dist,get_y(p),"move DOWN");
 
 
     }
@@ -233,7 +224,7 @@ bool test_move_ane() {
 }
 
 
-bool test_copy() {
+bool test_copy_rh() {
   piece p = new_piece_rh(0, 0, true, true);
   bool result = true;
   set_up_pieces_rh();
@@ -250,6 +241,25 @@ bool test_copy() {
   return result;
 }
 
+bool test_copy_ane() {
+  piece p = new_piece(0, 0, 1, 1, true, true);
+  bool result = true;
+  set_up_pieces_ane();
+  for (int i = 0 ; i < NB_PIECES; i++) {
+    copy_piece(pieces_ane[i],p);
+    result = result && test_equality_int(get_height(pieces_ane[i]), get_height(p), "copy get_height");
+    result = result && test_equality_int(get_width(pieces_ane[i]), get_width(p), "copy get_width");
+    result = result && test_equality_int(get_x(pieces_ane[i]), get_x(p), "copy get_x");
+    result = result && test_equality_int(get_y(pieces_ane[i]), get_y(p), "copy get_y");
+    result = result && test_equality_bool(can_move_x(pieces_ane[i]), can_move_x(p), "copy can_move_x");
+    result = result && test_equality_bool(can_move_y(pieces_ane[i]), can_move_y(p), "copy can_move_y");
+    result = result && test_equality_bool(is_horizontal(pieces_ane[i]), is_horizontal(p), "copy is_horizontal");
+  }
+  tear_down_ane();
+  delete_piece(p);
+  return result;
+}
+
 int main (int argc, char *argv[])
 {
   bool result= true;
@@ -258,12 +268,13 @@ int main (int argc, char *argv[])
   result = result && test_equality_bool(true, test_new_piece_rh(), "new_piece_rh");
   result = result && test_equality_bool(true, test_intersect_rh(), "intersect_rh");
   result = result && test_equality_bool(true, test_move_rh(), "move_rh");
-  result = result && test_equality_bool(true, test_copy(), "copy");
+  result = result && test_equality_bool(true, test_copy_rh(), "copy");
 
   /**Test des pieces générames **/
   result = result && test_equality_bool(true, test_new_piece_ane(), "new_piece_ane");
   result = result && test_equality_bool(true, test_intersect_ane(), "intersect_ane");
-  //result = result && test_equality_bool(true, test_move_ane(), "move_ane");
+  result = result && test_equality_bool(true, test_move_ane(), "move_ane");
+  result = result && test_equality_bool(true, test_copy_ane(), "copy_ane");
   
   if (result){
     printf("Youpi ! \n");
