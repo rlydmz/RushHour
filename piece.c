@@ -138,35 +138,35 @@ bool intersect(cpiece p1, cpiece p2){
 
 void move_piece(piece p, dir d, int distance){
   if (p!=NULL && distance !=0) {
-    if(can_move_y(p)){
-    	if(d==DOWN){
-    		p->y -= distance;
-      }
-      	else if(d==UP){
-		p->y += distance;
-      }
+  	if(can_move_x(p) && can_move_y(p)) {
+    		if(d==DOWN){
+    			p->y -= distance;
+    		}
+    		if(d==UP){
+    			p->y += distance;
+    		}
+    		if(d==LEFT){
+    			p->x -= distance;
+    		}
+    		if(d==RIGHT){
+    			p->x += distance;
+    		}
+    	}
+    	else if(can_move_y(p)){
+    		if(d==DOWN){
+    			p->y -= distance;
+      	}
+      		else if(d==UP){
+			p->y += distance;
+      	}
+    	}
+    	else if(can_move_x(p)){
+    		if(d==LEFT){
+	 		p->x -= distance;
+		}
+		else if(d==RIGHT){
+		  	p->x += distance;
+		}
+    	}
     }
-    else if(can_move_x(p)){
-    	if(d==LEFT){
-	 	p->x -= distance;
-	}
-	else if(d==RIGHT){
-	  	p->x += distance;
-	}
-    }
-    else if(can_move_x(p) && can_move_y(p)) {
-    	if(d==DOWN){
-    		p->y -= distance;
-    	}
-    	if(d==UP){
-    		p->y += distance;
-    	}
-    	if(d==LEFT){
-    		p->x -= distance;
-    	}
-    	if(d==RIGHT){
-    		p->x += distance;
-    	}
-    }
-  }
 }
