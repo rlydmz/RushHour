@@ -57,6 +57,7 @@ piece new_piece_rh(int x, int y, bool small, bool horizontal){
 }
 
 
+
 void delete_piece (piece p){
     if(p!=NULL)
         free(p);
@@ -71,27 +72,6 @@ void copy_piece (cpiece src, piece dst){
         dst->move_x = src->move_x;
         dst->move_y = src->move_y;
     }
-}
-
-void move_piece(piece p, dir d, int distance){
-  if (p!=NULL && distance !=0) {
-    if(can_move_y(p)){
-      if(d == DOWN){
-	p->y -= distance;
-      }
-      else if(d== UP){
-	p->y += distance;
-      }
-    }
-    else if(can_move_x(p)){
-	if(d==LEFT){
-	  p->x -= distance;
-	}
-	else if(d==RIGHT){
-	  p->x += distance;
-	}
-    }
-  }
 }
 
 
@@ -140,59 +120,39 @@ bool can_move_y(cpiece p){
 
 
 bool intersect(cpiece p1, cpiece p2){
-    
-    int taille_p1 = get_width(p1) * get_height(p1);
-    int taille_p2 = get_width(p2) * get_height(p2);
-    
-    int coord_p1[3][3];
-    int coord_p2[3][3];
-    
-    if (p1->width > p1->height){
-      for(int i=0; i<taille_p1; i++){
-	coord_p1[i][0] = p1->x + i;
-	coord_p1[i][1] = p1->y;
-      }
-    }
-    else if (p1->width < p1->height){
-      for(int i=0; i<taille_p1; i++){
-	coord_p1[i][0] = p1->x;
-	coord_p1[i][1] = p1->y + i;
-      }
-    }
-     else if (p1->width == p1->height) {
-       for(int i = 0; i < taille_p1; i++) {
-	 coord_p1[i][0] = p1->x + i;
-	 coord_p1[i][1] = p2->y + i;
-       }
-     }
-    
-    if (p2->width > p2->height) {
-      for(int i=0; i<taille_p2; i++){
-	coord_p2[i][0] = p2->x + i;
-	coord_p2[i][1] = p2->y;
-      }
-    }
-    else if(p2->width < p2->height){
-       for(int i=0; i<taille_p2; i++){
-           coord_p2[i][0] = p2->x;
-           coord_p2[i][1] = p2->y + i;
-       }
-    }
-    
-    else if (p2->width == p2->height) {
-      for(int i=0; i < taille_p2; i++) {
-	coord_p2[i][0] = p2->x + i;
-	coord_p2[i][1] = p2->y + i; 
-      }
-    } 
-	
-    for(int i=0; i<taille_p1; i++){
-      for(int j=0; j<taille_p2; j++){
-	if(coord_p1[i][0] == coord_p2[j][0] && coord_p1[i][1] == coord_p2[j][1])
-	  return true;
-      }
-    }
-    
-    return false;
 
- } 
+    for(int i=get_x(p1) ; i<get_x(p1)+get_width(p1) ; i++) {        // pour tout i: abscisse de p1
+        for(int j=get_y(p1) ; j<get_y(p1)+get_height(p1) ; j++) {       // pour tout j: ordonnee de p1
+            for(int k=get_x(p2) ; k<get_x(p2)+get_width(p2) ; k++){         // pour tout k: abscisse de p2
+                for(int l=get_y(p2) ; l<get_y(p2)+get_height(p2) ; l++){        // pour tout l: ordonnee de p2
+
+                    if(i==k && j==l) return true;                                   // vrai si on trouve une case en commun
+
+                }
+            }
+        }
+    }
+    return false;   // faux sinon
+
+}
+
+void move_piece(piece p, dir d, int distance){
+  if (p!=NULL && distance !=0) {
+    if(can_move_y(p)){
+      if(d == DOWN){
+	p->y -= distance;
+      }
+      else if(d== UP){
+	p->y += distance;
+      }
+    }
+    else if(can_move_x(p)){
+	if(d==LEFT){
+	  p->x -= distance;
+	}
+	else if(d==RIGHT){
+	  p->x += distance;
+	}
+    }
+  }
+}
