@@ -46,29 +46,13 @@ int game_square_piece (game g, int x, int y){
         int tmpX = get_x(tmpPiece);
         int tmpY = get_y(tmpPiece);
 
-        //Si la pièce est horizontale
-        if(is_horizontal(tmpPiece)){
-            for(int j=0; j<get_width(tmpPiece)-1; j++){
-                if(tmpX == x){
-                    if(tmpY == y)
-                        num_piece = i;  // si tmpX==x et tmpY==y on stocke le numéro de la pièce dans num_piece
-                }
-                else tmpX++;            // on avance sur la prochaine case de la pièce sur l'axe x
-            }
-        }
-        //Si la pièce est verticale
-        else{
-            for(int j=0; j<get_height(tmpPiece)-1; j++){
-                if(tmpX == x){
-                    if(tmpY == y)
-                        num_piece = i;  // si tmpX==x et tmpY==y on stocke le numéro de la pièce dans num_piece
-                    else
-                        tmpY++;         // on avance sur la prochaine case de la pièce sur l'axe y
+        for (int j = tmpX; j<=get_width(tmpPiece)-1+tmpX ; j++ )        // on avance sur la prochaine case de la pièce sur l'axe x
+            if(j == x){
+                for(int k=tmpY; k<=get_height(tmpPiece)-1+tmpY; k++){   // on avance sur la prochaine case de la pièce sur l'axe y
+                    if(k == y)
+                        num_piece = i;  // si j==x et k==y on stocke le numéro de la pièce dans num_piece
                 }
             }
-        }
-    }
-
     return num_piece;
 }
 
