@@ -1,8 +1,10 @@
 
-#ifndef _GAME_H_
-#define _GAME_H_
+#include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include "piece.h"
+#include "game.h"
+
 
 typedef struct game_s{
     int width;
@@ -13,8 +15,7 @@ typedef struct game_s{
 };
 
 void delete_game (game g){
-    if(g!=NULL)
-        free(g);
+    if(g!=NULL) free(g);
 }
 
 void copy_game (cgame src, game dst){
@@ -63,6 +64,7 @@ bool play_move(game g, int piece_num, dir d, int distance){
         }
         else if(d==UP && get_y(game_piece(g,piece_num))+get_height(game_piece(g,piece_num))+distance > g->height){
             return false; // la piece est sortie de la grille par le haut
+        }
     }
 
     // 2) the direction is compatible is the type of the piece
@@ -72,24 +74,24 @@ bool play_move(game g, int piece_num, dir d, int distance){
 
     // 3) the piece do not cross any other piece during its movement
 
-    if(dir==RIGHT){
-        for(int i=get_x(game_piece(g,piece_num))+get_width(game_piece(g,piece_num)) ; i < game->width ; i++){
-            if(game_square_piece(g,i,get_y(game_piece(piece_num))!= -1)) return false; // une autre piece se trouve sur le chemin vers la droite
+    if(d==RIGHT){
+        for(int i=get_x(game_piece(g,piece_num))+get_width(game_piece(g,piece_num)) ; i < g->width ; i++){
+            if(game_square_piece(g,i,get_y(game_piece(g,piece_num)))!= -1) return false; // une autre piece se trouve sur le chemin vers la droite
         }
     }
-    if(dir==LEFT){
+    if(d==LEFT){
         for(int i=get_x(game_piece(g,piece_num)) ; i >=0 ; i--){
-            if(game_square_piece(g,i,get_y(game_piece(piece_num))!= -1)) return false; // une autre piece se trouve sur le chemin vers la gauche
+            if(game_square_piece(g,i,get_y(game_piece(g,piece_num)))!= -1) return false; // une autre piece se trouve sur le chemin vers la gauche
         }
     }
-    if(dir==UP){
-        for(int i=get_y(game_piece(g,piece_num))+get_height(game_piece(g,piece_num)) ; i < game->height ; i++){
-            if(game_square_piece(g,get_x(game_piece(piece_num)),i)!= -1)) return false; // une autre piece se trouve sur le chemin vers le haut
+    if(d==UP){
+        for(int i=get_y(game_piece(g,piece_num))+get_height(game_piece(g,piece_num)) ; i < g->height ; i++){
+            if(game_square_piece(g,get_x(game_piece(g,piece_num)),i)!= -1) return false; // une autre piece se trouve sur le chemin vers le haut
         }
     }
-    if(dir==DOWN){
+    if(d==DOWN){
         for(int i=get_y(game_piece(g,piece_num)) ; i >=0 ; i--){
-            if(game_square_piece(g,get_y(game_piece(piece_num)),i)!= -1)) return false; // une autre piece se trouve sur le chemin vers le bas
+            if(game_square_piece(g,get_y(game_piece(g,piece_num)),i)!= -1) return false; // une autre piece se trouve sur le chemin vers le bas
         }
     }
 
@@ -131,17 +133,24 @@ int game_height(cgame g){
 }
 
 int game_square_piece (game g, int x, int y){
-    if(x<0 || x>(g->witdth)-1 || y<0 || y>(g->height)-1) return -1; // carre hors de la grille
+    if(x<0 || x>(g->width)-1 || y<0 || y>(g->height)-1) return -1; // carre hors de la grille
 
     int num_piece = -1; // variable de retour
     for(int i=0 ; i<(g->nb_pieces);i++){ // on teste toutes les pieces du jeu
-        if(get_x(game_piece(g,i))<x || get_y(game_piece(g,i))<y) continue; // carre a gauche ou en dessous de la piece i
+        if(get_x(game_piece(g,i))<x || get_y(game_piece(g,i))<y) {
+                continue; // carre a gauche ou en dessous de la piece i
+        }
         // carre au dessus de la piece ou a droite de la piece i sans intersect
-        else if(x > get_x(game_piece(g,i))+get_width(game_piece(g,i)) || y > get_y(game_piece(g,i))+get_height(game_piece(g,i))) continue;
-        else num_piece = i; // seul cas restant, le carre est sur la piece i (et donc sur aucune autre piece)
+        else if(x > get_x(game_piece(g,i))+get_width(game_piece(g,i)) || y > get_y(game_piece(g,i))+get_height(game_piece(g,i))) {
+                continue;
+        }
+        else {
+                num_piece = i; // seul cas restant, le carre est sur la piece i (et donc sur aucune autre piece)
+        }
     }
 
     return num_piece;
 }
+
 
 
