@@ -113,7 +113,7 @@ bool test_new_piece_ane() {
   return result;
 }
 
-bool test_intersect() {
+bool test_intersect_rh() {
   bool result = true;
   set_up_pieces_rh();
   for (int i=0; i < NB_PIECES; ++i){
@@ -132,7 +132,71 @@ bool test_intersect() {
   return result;
 }
 
-bool test_move() {
+bool test_intersect_ane() {
+  bool result = true;
+  set_up_pieces_ane();
+  for (int i=0; i < NB_PIECES; ++i){
+    for (int j =0; j<NB_PIECES; j++) {
+      result = result && test_equality_bool(i==j, intersect(pieces_ane[i], pieces_ane[j]),"intersect");
+      if(result == false)
+	printf("Probleme avec les pieces %d et %d ! \n", i, j);
+    }
+  }
+
+  piece pb_piece3 = new_piece(2, 1, 1, 1 ,true, true);
+  piece pb_piece4 = new_piece(2, 1, 2, 1 ,true, true);
+  result = result && test_equality_bool(true, intersect(pieces_ane[0], pb_piece3),"intersect pb3");
+  if(result == false)
+	printf("Probleme ! \n");
+  result = result && test_equality_bool(true, intersect(pb_piece4, pb_piece3),"intersect pb4");
+  if(result == false)
+	printf("Probleme ! \n");
+  delete_piece(pb_piece3);
+  delete_piece(pb_piece4);
+  tear_down_ane();
+  return result;
+}
+
+bool test_move_rh() {
+  bool result = true;
+  piece p = new_piece_rh(0, 0, true, true);
+  set_up_pieces_rh();
+  for (int dist = 1; dist < NB_PIECES; dist++)
+    for (int i=0; i < NB_PIECES; i++) {
+      copy_piece(pieces[i],p);
+      move_piece(p, LEFT, dist);
+      if (is_horizontal(pieces[i]))
+        result = result && test_equality_int(get_x(pieces[i])-dist,get_x(p),"move LEFT");
+      else
+        result = result && test_equality_int(get_x(pieces[i]),get_x(p),"move LEFT");
+      copy_piece(pieces[i],p);
+      move_piece(p, RIGHT, dist);
+      if (is_horizontal(pieces[i]))
+        result = result && test_equality_int(get_x(pieces[i])+dist,get_x(p),"move RIGHT");
+      else
+        result = result && test_equality_int(get_x(pieces[i]),get_x(p),"move RIGHT");
+      copy_piece(pieces[i],p);
+      move_piece(p, UP, dist);
+      if (!is_horizontal(pieces[i]))
+        result = result && test_equality_int(get_y(pieces[i])+dist,get_y(p),"move UP");
+      else
+        result = result && test_equality_int(get_y(pieces[i]),get_y(p),"move UP");
+      copy_piece(pieces[i],p);
+      move_piece(p, DOWN, dist);
+      if (!is_horizontal(pieces[i]))
+        result = result && test_equality_int(get_y(pieces[i])-dist,get_y(p),"move DOWN");
+      else
+        result = result && test_equality_int(get_y(pieces[i]),get_y(p),"move DOWN");
+
+
+    }
+  tear_down_rh();
+  delete_piece(p);
+  return result;
+  return false;
+}
+
+bool test_move_ane() {
   bool result = true;
   piece p = new_piece_rh(0, 0, true, true);
   set_up_pieces_rh();
@@ -195,13 +259,15 @@ int main (int argc, char *argv[])
 
   /** Test des pieces_rh **/
   result = result && test_equality_bool(true, test_new_piece_rh(), "new_piece_rh");
-  result = result && test_equality_bool(true, test_intersect(), "intersect");
-  result = result && test_equality_bool(true, test_move(), "move");
+  result = result && test_equality_bool(true, test_intersect_rh(), "intersect_rh");
+  result = result && test_equality_bool(true, test_move_rh(), "move_rh");
   result = result && test_equality_bool(true, test_copy(), "copy");
 
   /**Test des pieces générames **/
   result = result && test_equality_bool(true, test_new_piece_ane(), "new_piece_ane");
-
+  result = result && test_equality_bool(true, test_intersect_ane(), "intersect_ane");
+  result = result && test_equality_bool(true, test_move_ane(), "move_ane");
+  
   if (result){
     printf("Youpi ! \n");
     return EXIT_SUCCESS;
