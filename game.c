@@ -45,35 +45,60 @@ bool game_over_hr(cgame g){
 
 }
 
-//bool play_move(game g, int piece_num, dir d, int distance){
-//    piece p2 = new_piece_rh(10,10,true,true);
-//    copy_piece(g->p[piece_num],p2);
-//
-//
-//    /**si le mouvement fait sortir la piece**/
-//    if(get_x(g->p[0])+distance > 6)
-//        fprintf(stderr,"Out of bounds");
-//
-//    /**direction mauvaise pour mouvement**/
-//    if(is_horizontal(g->p[piece_num])){
-//        if(d!=LEFT || d!=RIGHT)
-//            return false;
-//
-//    /****/
-//    int j = 1;
-//    for(int i = 0; i < (g->nb_pieces) && (j<=distance) ;i++){
-//        p2->x += j;
-//        intersect(p2,g->p[i]);
-//        j++;
-//    }
-//    }
-//    else if(!is_horizontal(g->p[piece_num])){
-//        if(d!=UP || d!=DOWN)
-//            return false;
-//    }
-//
-//
-//}
+bool play_move(game g, int piece_num, dir d, int distance){
+
+    // 1) the piece stays in the game board
+
+    if( is_horizontal(game_piece(g,piece_num))){
+        if(d==LEFT && get_x(game_piece(g,piece_num))-distance < 0){
+            return false;  // piece sortie de la grille par la gauche
+        }
+        else if(d==RIGHT && get_x(game_piece(g,piece_num))+get_width(game_piece(g,piece_num))+distance > g->width){
+            return false; // la piece est sortie de la grille par la droite
+        }
+    }
+    else{
+        if(d==DOWN && get_y(game_piece(g,piece_num))-distance < 0){
+            return false;  // piece sortie de la grille par le bas
+        }
+        else if(d==UP && get_y(game_piece(g,piece_num))+get_height(game_piece(g,piece_num))+distance > g->height){
+            return false; // la piece est sortie de la grille par le haut
+    }
+
+    // 2) the direction is compatible is the type of the piece
+
+    if(is_horizontal(game_piece(g,piece_num)) && (d==UP || d==DOWN)) return false; // directions incompatibles
+    if(!is_horizontal(game_piece(g,piece_num)) && (d==LEFT || d==RIGHT)) return false; // idem
+
+    // 3) the piece do not cross any other piece during its movement
+
+    if(dir==RIGHT){
+        for(int i=get_x(game_piece(g,piece_num))+get_width(game_piece(g,piece_num)) ; i < game->width ; i++){
+            if(game_square_piece(g,i,get_y(game_piece(piece_num))!= -1)) return false; // une autre piece se trouve sur le chemin vers la droite
+        }
+    }
+    if(dir==LEFT){
+        for(int i=get_x(game_piece(g,piece_num)) ; i >=0 ; i--){
+            if(game_square_piece(g,i,get_y(game_piece(piece_num))!= -1)) return false; // une autre piece se trouve sur le chemin vers la gauche
+        }
+    }
+    if(dir==UP){
+        for(int i=get_y(game_piece(g,piece_num))+get_height(game_piece(g,piece_num)) ; i < game->height ; i++){
+            if(game_square_piece(g,get_x(game_piece(piece_num)),i)!= -1)) return false; // une autre piece se trouve sur le chemin vers le haut
+        }
+    }
+    if(dir==DOWN){
+        for(int i=get_y(game_piece(g,piece_num)) ; i >=0 ; i--){
+            if(game_square_piece(g,get_y(game_piece(piece_num)),i)!= -1)) return false; // une autre piece se trouve sur le chemin vers le bas
+        }
+    }
+
+    move_piece(game_piece(g,piece_num),d,distance);
+    g->moves += distance;
+    return true;
+
+}
+
 
 int game_nb_moves(cgame g){
     return g->moves;
@@ -82,6 +107,7 @@ int game_nb_moves(cgame g){
 
 
 ///////////// version 2 /////////////////
+
 
 game new_game (int width, int height, int nb_pieces, piece *pieces){
     game g = malloc(sizeof(struct game_s));
