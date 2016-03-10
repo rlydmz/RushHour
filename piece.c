@@ -154,5 +154,19 @@ void move_piece(piece p, dir d, int distance){
 	  	p->x += distance;
 	}
     }
+    else if(can_move_x(p) && can_move_y(p)) {
+    	if(d==DOWN){
+    		p->y -= distance;
+    	}
+    	if(d==UP){
+    		p->y += distance;
+    	}
+    	if(d==LEFT){
+    		p->x -= distance;
+    	}
+    	if(d==RIGHT){
+    		p->x += distance;
+    	}
+    }
   }
 }
