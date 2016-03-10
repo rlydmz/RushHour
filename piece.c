@@ -74,24 +74,24 @@ void copy_piece (cpiece src, piece dst){
 }
 
 void move_piece(piece p, dir d, int distance){
-    if(p!=NULL && distance !=0 ){
-        if(!is_horizontal(p)){
-            if(d == DOWN){
-                p->y -= distance;
-            }
-            else if(d == UP){
-                p->y += distance;
-            }
-        }
-        else{
-            if(d == LEFT){
-                p->x -= distance;
-            }
-            else if(d == RIGHT){
-                p->x += distance;
-            }
-        }
+  if (p!=NULL && distance !=0) {
+    if(can_move_y(p)){
+      if(d == DOWN){
+	p->y -= distance;
+      }
+      else if(d== UP){
+	p->y += distance;
+      }
     }
+    else if(can_move_x(p)){
+	if(d==LEFT){
+	  p->x -= distance;
+	}
+	else if(d==RIGHT){
+	  p->x += distance;
+	}
+    }
+  }
 }
 
 
