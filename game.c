@@ -36,24 +36,28 @@ int game_height(cgame g){
 }
 
 int game_square_piece (game g, int x, int y){
-    if(x<0 || x>(g->witdth)-1 || y<0 || y>(g->height)-1) return -1; // carre hors de la grille
+    if(x<0 || x>(g->width)-1 || y<0 || y>(g->height)-1) return -1; // carre hors de la grille
 
     int num_piece = -1;                 // variable de retour
 
 
     for(int i=0 ; i<(g->nb_pieces);i++){// on teste toutes les pieces du jeu
-        int tmpPiece = game_piece(p,i);
+        piece tmpPiece = (piece)game_piece(g,i);
         int tmpX = get_x(tmpPiece);
         int tmpY = get_y(tmpPiece);
 
-        for (int j = tmpX; j<=get_width(tmpPiece)-1+tmpX ; j++ )        // on avance sur la prochaine case de la pièce sur l'axe x
+        for (int j = tmpX; j<=get_width(tmpPiece)-1+tmpX ; j++ ){        // on avance sur la prochaine case de la pièce sur l'axe x
             if(j == x){
                 for(int k=tmpY; k<=get_height(tmpPiece)-1+tmpY; k++){   // on avance sur la prochaine case de la pièce sur l'axe y
                     if(k == y)
                         num_piece = i;  // si j==x et k==y on stocke le numéro de la pièce dans num_piece
                 }
             }
+	}
+    }
+
     return num_piece;
+
 }
 
 game new_game_hr(int nb_pieces, piece *pieces){
@@ -151,4 +155,3 @@ bool play_move(game g, int piece_num, dir d, int distance){
 int game_nb_moves(cgame g){
     return g->moves;
 }
-
