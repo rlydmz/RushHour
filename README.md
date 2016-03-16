@@ -27,12 +27,23 @@ Piece 0 only move horizontaly and is 2 width and 1 height
 
 Comment jouer à l'Ane Rouge ?
 
-Le but est de déplacer la Piece 0 de la position ( , ) à la position ( , ).
-Le plateau est de taille x . de largeur et de hauteur.
+Le but est de déplacer la Piece 0 de la position initial à la position (2,1).
+Le plateau est de taille 4x5. de largeur et de hauteur.
 Pour que la piece 0 puisse de déplacer, il faut que les autres pieces disposées sur le plateau de jeu ne lui bloquent pas le passage.
 Il faut donc déplacer les pieces de maniere à ce que la Piece 0 arrive à destination.
 Les pièces bougent toutes horizontalement et verticalement.
 Il y a differents types de pieces, des carrés et des rectangulaire.
 Les pieces carrés sont toutes de la même taille : 1 de largeur et 1 de hauteur.
-Les pieces rectangles sont toutes de la même taille : 2 de hauteur et 1 de largeur ou 1 de largeur et 2 de hauteur.
-La piece 0 bouge elle aussi horizontalement ou verticalement et sont de taille 2 de largeur et 2 de hauteur.
+Les pieces rectangles sont toutes de la même taille : 2 de largeur et 1 de hauteur ou 1 de hauteur et 2 de largeur.
+La piece 0 bouge elle aussi horizontalement ou verticalement et sa taille est 2 de largeur et 2 de hauteur.
+
+Ane Rouge - How to play ?
+
+The goal is to move Piece 0 from initial pos to pos (2,1).
+The board is 4x5 . width and height.
+There are others pieces on the board that obstruct the deplacement of piece 0. You need to move those others pieces if you want to move Piece 0 to her destination. 
+All of the pieces can move horizontaly and verticaly.
+Some of those piece are square and others are rectangular.
+Square pieces got same size : 1 width and 1 height.
+Rectangular pieces got same size to : 2 width and 1 height or 1 width and 2 height.
+Piece 0 also move horizontaly or verticaly and is size is 2 width and 2 height.
