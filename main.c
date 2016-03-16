@@ -7,36 +7,40 @@
 
 #define TAILLE 6
 
-void afficher_game(game g){
+/** afficher_game affiche la grille de jeu. Le jeu est représenté de la manière suivante :
+    -La grille est affichée grâce à des cases
+    -A l'intérieur de ces cases peut se trouver soit des voitures, numérotées de 0 (voiture rouge) à TAILLE-1 **/
+
+void afficher_game(game g) {
     int nbP = game_nb_pieces(g);
     int grille[TAILLE][TAILLE];
     /**Mettre toutes les cases de la grille à -1**/
-    for (int i=0;i<TAILLE; i++){
-        for (int j=0; j<TAILLE; j++){
+    for (int i=0; i<TAILLE; i++) {
+        for (int j=0; j<TAILLE; j++) {
             grille[j][i]= -1;
         }
     }
     printf("\n");
     /**Place l'indice des pièces (dans le tableau de piece de g) dans la grille**/
-    for(int i=0;i<nbP;i++){
+    for(int i=0; i<nbP; i++) {
         cpiece tmp_piece = game_piece(g,i);
         int x = get_x(tmp_piece);
         int y = get_y(tmp_piece);
-        /**On place le numéro de la pièce à l'horizontal dasn les cases*/
+        /**On place le numéro de la pièce à l'horizontal dasn les cases**/
         if(is_horizontal(tmp_piece))
             for(int j=0; j<get_width(tmp_piece); j++)
                 grille[x+j][y] = i;
-        /**On place le numéro de la pièce à la verticale dans les cases*/
+        /**On place le numéro de la pièce à la verticale dans les cases**/
         else
             for(int j=0; j<get_height(tmp_piece); j++)
                 grille[x][y+j] = i;
     }
     /**AFFICHAGE GRILLE**/
     printf("********RUSHHOUR*********\n");
-    for(int ytab=TAILLE-1; ytab>=0; ytab--){
+    for(int ytab=TAILLE-1; ytab>=0; ytab--) {
         printf("%d ",ytab);
-        for(int xtab=0; xtab<TAILLE; xtab++){
-                printf("|");
+        for(int xtab=0; xtab<TAILLE; xtab++) {
+            printf("|");
             if(grille[xtab][ytab]==-1) /**Si la valeur dans la matrice est -1 on affiche rien**/
                 printf("  ");
             else
@@ -50,12 +54,16 @@ void afficher_game(game g){
     }
     printf("  -----------------------\n");
     printf("  ");
-    for(int i=0;i<TAILLE;i++) printf("  %d ",i);
+    for(int i=0; i<TAILLE; i++) printf("  %d ",i);
     printf("\n");
     printf("\n");
 }
 
-piece* creer_piece_game(){
+/** creer_piece_game va créer et renvoyer un tableau de pieces
+    Les pieces sont pour le moment crées de manière manuelle mais permettent au jeu
+    d'être fonctionnel tout en assurant une certaines compléxité **/
+
+piece* creer_piece_game() {
     piece *tabP= (piece*)malloc(TAILLE*sizeof(piece));
     tabP[0] = new_piece_rh(0,3,true,true);
     tabP[1] = new_piece_rh(5,2,false,false);
@@ -64,7 +72,7 @@ piece* creer_piece_game(){
     tabP[4] = new_piece_rh(3,2,false,false);
     tabP[5] = new_piece_rh(0,2,false,true);
 
- return tabP;
+    return tabP;
 }
 
 /** La fonction début_jeu va permettre au jeu g qui lui est passé en paramètre de fonctionner.
@@ -72,7 +80,7 @@ piece* creer_piece_game(){
     Des pièces du jeu, effectuera les vérifications nécessaires pour afficher de nouveau le jeu.
     Tant que le jeu n'est pas finis, debut_jeu n'est pas censé s'arreter **/
 
-void debut_jeu(game g, int nbPiece){
+void debut_jeu(game g, int nbPiece) {
 
     /**Declararion des variables permettant de récupérer et traiter les informations
     destinées aux mouvements des pièces**/
@@ -84,56 +92,56 @@ void debut_jeu(game g, int nbPiece){
     bool estHorizontale;
     dir direction;
 
-    /**Début du jeu. Tant que le jeu n'est pas finis, on continue a demander des informations
+    /**Début du jeu. Tant que le jeu n'est pas finit, on continue a demander des informations
     a l'utilisateur**/
-    while(!game_over_hr(g)){
+    while(!game_over_hr(g)) {
 
         /** On demande à l'utilisateur de saisir un numéro de pièce **/
         printf("Veuillez choisir le numero de la piece a bouger (entre 0 et 5) : ");
         fgets(numPiece,3,stdin);
         /** Si l'indice de la pièce est inférieur à 0 et que la pièce n'existe pas
         On lui renvoie un message d'erreur en l'invitant à recommencer sa saisie **/
-        if(atoi(numPiece)<0){
+        if(atoi(numPiece)<0) {
             printf("Cette piece n'existe pas : numero trop petit ! Veuillez reessayer... \n");
             continue;
         }
         /** Si l'indice de la pièce est inférieur supérieur à 6, soit la taille du jeu
         et que la pièce n'existe pas, on lui renvoie un message d'erreur en l'invitant à recommencer sa saisie **/
-        else if(atoi(numPiece)>nbPiece){
+        else if(atoi(numPiece)>nbPiece) {
             printf("Cette piece n'existe pas : numero trop grand ! Veuillez reessayer... \n");
             continue;
         }
         /**On regarde si la piece que l'utilisateur a choisi de bouger est horizontale ou verticale
         et on lui propos en fonction les deux directions possible pour le mouvement **/
         indicePiece = atoi(numPiece);
-        if(is_horizontal(game_piece(g,indicePiece))){
+        if(is_horizontal(game_piece(g,indicePiece))) {
             printf("Veuillez choisir une direction : left ou right : ");
             estHorizontale = true;
         }
-        else{
+        else {
             printf("Veuillez choisir une direction : up ou down : ");
             estHorizontale = false;
         }
         /** On récupère ainsi la direction du mouvement **/
         fgets(chaineDirection,10,stdin);
-        if (strcmp(chaineDirection,"left\n")==0 && estHorizontale){
+        if (strcmp(chaineDirection,"left\n")==0 && estHorizontale) {
             direction=LEFT;
         }
-        else if (strcmp(chaineDirection,"right\n")==0 && estHorizontale){
+        else if (strcmp(chaineDirection,"right\n")==0 && estHorizontale) {
             direction=RIGHT;
         }
-        else if (strcmp(chaineDirection,"up\n")==0 && !estHorizontale){
+        else if (strcmp(chaineDirection,"up\n")==0 && !estHorizontale) {
             direction=UP;
         }
-        else if (strcmp(chaineDirection,"down\n")==0 && !estHorizontale){
+        else if (strcmp(chaineDirection,"down\n")==0 && !estHorizontale) {
             direction=DOWN;
         }
         /** On récupère la distance du mouvement **/
         printf("Veuillez choisir la distance du mouvement a effectuer : ");
         fgets(chaineDistance,3,stdin);
         distance = atoi(chaineDistance);
-        /** Si le mouvement est incorrect, on le signiefie **/
-        if(play_move(g,indicePiece,direction,distance)==false){
+        /** Si le mouvement est incorrect, on le signifie **/
+        if(play_move(g,indicePiece,direction,distance)==false) {
             printf("Erreur lors de la tentive de mouvement \n");
         }
 
@@ -147,15 +155,15 @@ void debut_jeu(game g, int nbPiece){
 }
 
 
-int main(int argc, char* argv[]){
+int main(int argc, char* argv[]) {
 
-  /** Création du jeu **/
-  game g = new_game_hr(TAILLE,creer_piece_game());
-  /** Affichage du jeu et de la grille de départ **/
-  afficher_game(g);
-  /** Appel de la fonction de début du jeu **/
-  debut_jeu(g,TAILLE);
+    /** Création du jeu **/
+    game g = new_game_hr(TAILLE,creer_piece_game());
+    /** Affichage du jeu et de la grille de départ **/
+    afficher_game(g);
+    /** Appel de la fonction de début du jeu **/
+    debut_jeu(g,TAILLE);
 
-return 0;
+    return 0;
 
 }
