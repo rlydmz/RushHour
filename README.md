@@ -40,10 +40,10 @@ La piece 0 bouge elle aussi horizontalement ou verticalement et sa taille est 2 
 Ane Rouge - How to play ?
 
 The goal is to move Piece 0 from pos(1,3) to pos (1,0).
-The board is 4x5 . 4 of width and 5 of height.
+The board is 4x5 . 4 width and 5 height.
 There are others pieces on the board that obstruct the deplacement of piece 0. You need to move those others pieces if you want to move Piece 0 to her destination. 
 All of the pieces can move horizontaly and verticaly.
 Some of those pieces are square and others are rectangular.
-Square pieces got the same size : 1 of width and 1 of height.
-Rectangular pieces got the same size too : 2 of width and 1 of height or, 1 of width and 2 of height.
-Piece 0 also move horizontaly or verticaly and his size is 2 of width and 2 of height.
+Square pieces got the same size : 1 width and 1 height.
+Rectangular pieces got the same size too : 2 width and 1 height or, 1 width and 2 height.
+Piece 0 also move horizontaly or verticaly and his size is 2  width and 2 height.
