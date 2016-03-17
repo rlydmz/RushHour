@@ -4,7 +4,7 @@ Projet S4 Raphael, Brian, Emilio, Benjamin
 
 Comment jouer à Rush Hour ? 
 
-Le but est de déplacer la Piece 0 (voiture rouge) de la position (0,3) à la position (4,3).
+Le but est de déplacer la Piece 0 (voiture rouge) de la position initiale à la position (4,3).
 Le plateau est de taille 6x6. 6 de largeur et 6 de hauteur.
 Pour que la piece 0 puisse se déplacer il faut que les autres pieces disposées sur le plateau de jeu ne lui bloquent pas le passage. 
 Il faut donc déplacer les pieces de maniere à ce que la Piece 0 arrive à destination.
@@ -17,7 +17,7 @@ La piece 0, elle, ne bouge qu'horizontalement et est de taille 2 de largeur et 1
 
 Rush Hour - How to play ?
 
-The goal is to move the Piece 0 (red car) from position (0,3) to position (4,3).
+The goal is to move the Piece 0 (red car) from position initial to position (4,3).
 The board is 6x6. 6 width and 6 height.
 There are others pieces on the board that obstruct the movement of Piece 0. You need to move those others pieces if you want to move Piece 0 to her destination. 
 Some of those pieces move only horizontally and others only vertically.
