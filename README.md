@@ -18,12 +18,12 @@ La piece 0, elle, ne bouge qu'horizontalement et est de taille 2 de largeur et 1
 Rush Hour - How to play ?
 
 The goal is to move the Piece 0 (red car) from position (0,3) to position (4,3).
-The board is 6x6. 6 of width and 6 of height.
-There are others pieces on the board that obstruct the deplacement of Piece 0. You need to move those others pieces if you want to move Piece 0 to her destination. 
-Some of those pieces move only horizontaly and others only verticaly.
-There are large pieces : 3 width or height, and 1 height or width if they are horizontaly or verticaly.
-And there are small pieces : 2 width or height, and 1 height or width if they are horizontaly or verticaly.
-Piece 0 only move horizontaly and is 2 width and 1 height
+The board is 6x6. 6 width and 6 height.
+There are others pieces on the board that obstruct the movement of Piece 0. You need to move those others pieces if you want to move Piece 0 to her destination. 
+Some of those pieces move only horizontally and others only vertically.
+There are large pieces : 3 width or height, and 1 height or width depends on if they are horizontal or vertical.
+And there are small pieces : 2 width or height, and 1 height or width depends on if they are horizontal or vertical.
+Piece 0 only move horizontally and is 2 width and 1 height.
 
 Comment jouer à l'Ane Rouge ?
 
@@ -39,11 +39,11 @@ La piece 0 bouge elle aussi horizontalement ou verticalement et sa taille est 2 
 
 Ane Rouge - How to play ?
 
-The goal is to move Piece 0 from pos(1,3) to pos (1,0).
+The goal is to move Piece 0 from pos (1,3) to pos (1,0).
 The board is 4x5 . 4 width and 5 height.
 There are others pieces on the board that obstruct the deplacement of piece 0. You need to move those others pieces if you want to move Piece 0 to her destination. 
-All of the pieces can move horizontaly and verticaly.
+All of the pieces can move horizontally and vertically.
 Some of those pieces are square and others are rectangular.
 Square pieces got the same size : 1 width and 1 height.
 Rectangular pieces got the same size too : 2 width and 1 height or, 1 width and 2 height.
-Piece 0 also move horizontaly or verticaly and his size is 2  width and 2 height.
+Piece 0 also move horizontally or vertically and his size is 2  width and 2 height.
