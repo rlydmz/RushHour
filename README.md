@@ -27,7 +27,7 @@ Piece 0 only move horizontaly and is 2 width and 1 height
 
 Comment jouer à l'Ane Rouge ?
 
-Le but est de déplacer la Piece 0 de la position initial à la position (2,1).
+Le but est de déplacer la Piece 0 de la position (1,3) à la position (1,0).
 Le plateau est de taille 4x5. de largeur et de hauteur.
 Pour que la piece 0 puisse de déplacer, il faut que les autres pieces disposées sur le plateau de jeu ne lui bloquent pas le passage.
 Il faut donc déplacer les pieces de maniere à ce que la Piece 0 arrive à destination.
@@ -39,7 +39,7 @@ La piece 0 bouge elle aussi horizontalement ou verticalement et sa taille est 2 
 
 Ane Rouge - How to play ?
 
-The goal is to move Piece 0 from initial pos to pos (2,1).
+The goal is to move Piece 0 from pos(1,3) to pos (1,0).
 The board is 4x5 . width and height.
 There are others pieces on the board that obstruct the deplacement of piece 0. You need to move those others pieces if you want to move Piece 0 to her destination. 
 All of the pieces can move horizontaly and verticaly.
