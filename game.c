@@ -122,10 +122,10 @@ bool play_move(game g, int piece_num, dir d, int distance){
             {
                 continue;
             }
-            if (intersect(game_piece(g,piece_num),game_piece(g,i)) || get_x((piece)game_piece(g,piece_num)) > (6-get_width((piece)game_piece(g,piece_num))) ||
-                 get_y((piece)game_piece(g,piece_num)) > (6-get_height((piece)game_piece(g,piece_num))) ||
-                 get_x((piece)game_piece(g,piece_num))<0 ||
-                 get_y((piece)game_piece(g,piece_num))<0)
+            if (intersect(game_piece(g,piece_num),game_piece(g,i)) ||
+            	get_x((piece)game_piece(g,piece_num)) > (6-get_width((piece)game_piece(g,piece_num))) ||
+                get_y((piece)game_piece(g,piece_num)) > (6-get_height((piece)game_piece(g,piece_num))) ||
+                get_x((piece)game_piece(g,piece_num))<0 || get_y((piece)game_piece(g,piece_num))<0)
             {
                 if(d == LEFT)
                 {
