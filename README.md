@@ -1,6 +1,11 @@
 # RushHour
 Projet S4 Raphael, Brian, Emilio, Benjamin
 
+Comment installer les deux jeux ?
+-Créez un nouveau dossier
+-Placez-vous dans ce dossier et effectuez la commande suivante : cmake ..
+-Exécutez au choix votre jeu : ./jeux/RushHour ou ./jeux/AneRouge
+
 
 Comment jouer à Rush Hour ? 
 
