@@ -157,12 +157,23 @@ void debut_jeu(game g, int nbPiece) {
 
 int main(int argc, char* argv[]) {
 
+    piece *tabP= (piece*)malloc(TAILLE*sizeof(piece));
+    tabP[0] = new_piece_rh(0,3,true,true);
+    tabP[1] = new_piece_rh(5,2,false,false);
+    tabP[2] = new_piece_rh(2,1,true,true);
+    tabP[3] = new_piece_rh(3,5,false,true);
+    tabP[4] = new_piece_rh(3,2,false,false);
+    tabP[5] = new_piece_rh(0,2,false,true);
+
     /** Création du jeu **/
-    game g = new_game_hr(TAILLE,creer_piece_game());
+    game g = new_game_hr(TAILLE,tabP);
     /** Affichage du jeu et de la grille de départ **/
     afficher_game(g);
     /** Appel de la fonction de début du jeu **/
     debut_jeu(g,TAILLE);
+    /**On detruit le jeu une fois qu'il est fini ainsi que le tableau**/
+    delete_game(g);
+    free(tabP);
 
     return 0;
 

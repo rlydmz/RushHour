@@ -90,6 +90,7 @@ void afficher_game(game g) {
     printf("    0   1   2   3");
     printf("\n");
     printf("\n");
+
 }
 
 
@@ -188,7 +189,7 @@ int main() {
     game g = new_game(4,5,NB_PIECE,creer_piece_game()); //création du jeu
     afficher_game(g);
     debut_jeu(g);
-
+    delete_game(g);
     return 0;
 
 }
