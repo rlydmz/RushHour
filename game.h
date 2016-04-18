@@ -1,3 +1,4 @@
+
 #ifndef _GAME_H_
 #define _GAME_H_
 #include <stdbool.h>
@@ -25,19 +26,18 @@
  * See also this more technical discussion: http://stackoverflow.com/questions/8504411/typedef-pointer-const-weirdness
  *
  **/
-typedef struct game_s* game;
-typedef const struct game_s* cgame;
+ typedef struct game_s game_s;
+typedef struct game_s *game;
+typedef const struct game_s *cgame;
+struct game_s {
+    int moves;
+    int width;      /**Largeur du jeu**/
+    int height;     /**Hauteur du jeu**/
+    int nb_pieces;
+    piece* p;
 
+ };
 
-/**
- * @brief Create a new game given a starting position defined by a set of pieces.
- * The pieces of the created game are copies of the ones given as argument.
- * The number of moves of the game is set to 0.
- * @param nb_pieces number of pieces g
- * @param pieces array of pieces. The pieces given here are not modified by this function.
- * @return a pointer toward the generated game
- */
-game new_game_hr (int nb_pieces, piece *pieces);
 
 /**
  * @brief Destroy the game and free allocated memory
@@ -69,7 +69,7 @@ cpiece game_piece(cgame g, int piece_num);
  * @brief Test is the game is over (i.e. if the piece 0 has reached the exit).
  * @return true if the piece number 0 has coordinates (4,3)
 */
-bool game_over_hr(cgame g);
+bool game_over_rh(cgame g);
 
 
 /**
@@ -97,6 +97,8 @@ int game_nb_moves(cgame g);
 
 ///////////// version 2 /////////////////
 game new_game (int width, int height, int nb_pieces, piece *pieces);
+
+void set_game (cgame src,game dst);
 
 
 /**
