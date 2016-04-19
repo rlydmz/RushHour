@@ -24,19 +24,7 @@ game new_game (int width, int height, int nb_pieces, piece *pieces) {
      return g;
  }
 
-void set_game (cgame src,game dst) {
 
-    dst = malloc(sizeof(game));
-    if(dst==NULL)
-        exit(EXIT_FAILURE);
-
-    dst->moves = src->moves;
-    printf("klfsh\n");
-    dst->width = src->width;
-    dst->height = src->height;
-    dst->nb_pieces = src->nb_pieces;
-    dst->p = src->p;
- }
 
 int game_width(cgame g) {
      return g->width;
@@ -45,6 +33,20 @@ int game_width(cgame g) {
 int game_height(cgame g) {
      return g->height;
  }
+
+bool equals(cgame g1, cgame g2){
+    if(game_width(g1)!=game_width(g2) || game_height(g1)!=game_height(g2)) return false;
+    if(game_nb_pieces(g1)!=game_nb_pieces(g2)) return false;
+    for(int i=0;i<game_nb_pieces(g1);i++){
+        cpiece p1 = game_piece(g1,i);
+        cpiece p2 = game_piece(g2,i);
+        if(get_x(p1)!=get_x(p2) || get_y(p1)!=get_y(p2)) return false;
+        if(get_width(p1)!=get_width(p2) || get_height(p1)!=get_height(p2)) return false;
+        if(can_move_x(p1) != can_move_x(p2)) return false;
+        if(can_move_y(p1) != can_move_y(p2)) return false;
+    }
+    return true;
+}
 
 int game_square_piece (game g, int x, int y) {
      if(x<0 || x>(g->width)-1 || y<0 || y>(g->height)-1) return -1; // carre hors de la grille
@@ -97,6 +99,20 @@ cpiece game_piece(cgame g, int piece_num) {
          fprintf(stderr,"Error, place not in the game");
      return (cpiece)g->p[piece_num];
  }
+
+piece* game_pieces_copy(cgame g){
+
+    piece* pcs = malloc(game_nb_pieces(g)*sizeof(piece));
+    if(pcs==NULL)
+        return(EXIT_FAILURE);
+
+    for(int i=0;i<game_nb_pieces(g);i++){
+        piece p = game_piece(g,i);
+        pcs[i] = new_piece(get_x(p),get_y(p),get_width(p),get_height(p),can_move_x(p),can_move_y(p));
+    }
+
+    return pcs;
+}
 
 bool game_over_rh(cgame g) {
      int x = get_x(g->p[0]);

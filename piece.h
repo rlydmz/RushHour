@@ -43,6 +43,7 @@ typedef enum dir_e {UP, LEFT, DOWN, RIGHT} dir;
 piece new_piece_rh (int x, int y, bool small, bool horizontal);
 
 
+
 /**
  * @brief Destroys the piece and frees allocated memory
  * @param p the piece to destroy

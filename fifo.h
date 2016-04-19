@@ -23,6 +23,7 @@ game defiler(Fifo* file);
 Fifo* initialiser_fifo();
 bool is_fifo_empty(Fifo* file);
 game get_value(Fifo* file);
+void afficher_fifo(Fifo* file);
 
 
 #endif // H_FIFO

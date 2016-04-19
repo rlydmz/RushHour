@@ -93,12 +93,13 @@ bool play_move(game g, int piece_num, dir d, int distance);
  */
 int game_nb_moves(cgame g);
 
+bool equals(cgame g1, cgame g2); // methode rajoutee qui teste l'egalite
 
+piece* game_pieces_copy(cgame g);
 
 ///////////// version 2 /////////////////
 game new_game (int width, int height, int nb_pieces, piece *pieces);
 
-void set_game (cgame src,game dst);
 
 
 /**

@@ -80,6 +80,19 @@ game get_value(Fifo* file){
 
 }
 
+void afficher_fifo(Fifo* file){
+    if (file == NULL){
+        fprintf(stderr,"Error: fifo is empty");
+        exit(EXIT_FAILURE);
+    }
+    FileElem* elem = file->first;
+    printf(" --- Debut de la file ---\n");
+    while(!(elem==NULL)){
+        display(elem->g);
+        elem = elem->next;
+    }
+    printf("\n --- Fin de la file ---\n\n");
+}
 
 
 

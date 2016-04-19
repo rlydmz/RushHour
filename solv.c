@@ -12,18 +12,20 @@
 #include "solv.h"
 
 #define GRID_SIZE 6
+#define NB_PIECES 3
 
 
 int main(int argc, char* argv[]){
 
-    // nouveau jeu g1
+    // nouveau jeu g
 
     piece p0 = new_piece(0,3,2,1,true,false);
     piece p1 = new_piece(3,1,1,3,false,true);
     piece p2 = new_piece(2,0,2,1,true,false);
-    piece p3 = new_piece(5,2,1,3,false,true);
+    //piece p3 = new_piece(5,2,1,3,false,true);
+    //piece p4 = new_piece(0,1,1,2,false,true);
 
-    piece* pcs = malloc(4*sizeof(piece));
+    piece* pcs = malloc(3*sizeof(piece));
     if(pcs==NULL){
         fprintf(stderr,"Error: allocation failed");
         exit(EXIT_FAILURE);
@@ -32,28 +34,90 @@ int main(int argc, char* argv[]){
     pcs[0]=p0;
     pcs[1]=p1;
     pcs[2]=p2;
-    pcs[3]=p3;
+    //pcs[3]=p3;
+    //pcs[4]=p4;
 
-    game g = new_game(GRID_SIZE, GRID_SIZE,4,pcs);
+
+    game g = new_game(GRID_SIZE, GRID_SIZE,3,pcs); // partie initiale
+    Fifo* file = initialiser_fifo(); // file pour contenir les noeuds de l'arbre des possibilites
+    ListeDC_game* liste = init_list_game(g);
+    ListeDC_game* configs = init_list_game(g); // contient un exemplaire de chaque etat deja explore
+    ListeDC_list* exploration = init_list_list(liste);
+    int cpt=0;
+
+    /* BEGIN ______________________________ */
+
+    printf("\n  == JEU INITIAL ==  \n"); // affichage du jeu initial
     display(g);
-    printf("\n____________________\n\n");
+    printf("\n =================\n\n");
 
-    // begin
-
-    game* issues = get_issues(g);
+    enfiler(file,g); // on enfile le jeu initial
 
 
-    printf("Code execute sans plantage\n");
 
-//    while(!game_over_rh(get_first(fref))){ // tant que la tete de la file fref n'est pas une config gagnante
-//
-//        game current = defiler(fref); // on defile et recupere cette config
-//        int nbIssues = nb_issues(current); // calcul du nombre d'issues
-//
-//    }
 
-    // end
+    while(!game_over_rh(get_value(file)) && !is_fifo_empty(file)){ /* tant que le premier de la file n'est pas une config gagnante */
 
+
+
+        game current = defiler(file);
+        int nbIssues = nb_issues(current); // nombre d'issues au jeu courant
+
+        printf("\nTOUR %d - %d ISSUES\nTaille de exploration: %d\n\n",cpt,nbIssues,get_size_listlist(exploration));
+
+        game* issues = get_issues(current);
+
+//        for(int i=0;i<nbIssues;i++){
+//            if(game_over_rh(issues[i])){
+//                printf("GAME OVER\n");
+//                break;
+//            }
+//        }
+
+        ListElem_list* iter = exploration->first;
+        while(!equals(current,iter->liste->last->g)){  // parcours de la liste exploration jusqu'a trouver une liste DC dont le dernier element possede un game identique a current
+            iter = iter->next;
+        }
+
+        for(int i=0;i<nbIssues-1;i++){ // insertion des copies dans exploration
+            insert_last_list(exploration,clone_list_game(iter->liste));
+        }
+
+        iter = exploration->first; // on remet l'iterateur a sa valeur initiale
+        int i=0;
+
+
+        while(iter!=NULL){ // insertion des issues en fin des listes DC correspondantes
+            if(equals(current,iter->liste->last->g)){
+
+                insert_last_game(iter->liste,issues[i]);
+                //display(iter->liste->last->g);
+                i++;
+            }
+            iter = iter->next;
+        }
+
+        for(int i=0;i<nbIssues;i++){
+
+            //if(!is_game_inlist(issues[i],configs)){
+                //display(issues[i]);
+            enfiler(file,issues[i]);
+            insert_last_game(configs,issues[i]);
+            //}
+        }
+
+        cpt++;
+        free(iter);
+
+    }
+
+
+    printf("\n\n     RESULTAT\n");
+    display(get_value(file));
+    printf("\n Solution trouvee en %d coups\n",cpt);
+
+
+    /* END _________________________________ */
 
     delete_game(g);
     return EXIT_SUCCESS;
@@ -143,22 +207,6 @@ int nb_issues(cgame g){
     return n;
 }
 
-Fifo** clone_fifo(Fifo** farray, int nbClones){
-    int fsize = sizeof(Fifo);
-
-    farray = realloc(farray,nbClones*sizeof(*farray));
-    if(farray==NULL){
-        fprintf(stderr,"Error: reallocation failed");
-        exit(EXIT_FAILURE);
-    }
-
-    for(int i=1;i<nbClones;i++){
-        farray[i] = malloc(sizeof(*farray[i]));
-        farray[i] = memcpy(farray[i],farray[0],fsize);
-    }
-    return farray;
-
-}
 
 game* get_issues(game g){
 
@@ -170,8 +218,7 @@ game* get_issues(game g){
         exit(EXIT_FAILURE);
 
     for(int i=0;i<nbIssues;i++){
-        issues[i] = new_game(g->width,g->height,g->nb_pieces,g->p);
-        printf("adresse issues[%d]->nb_pieces: %p\n", i,(issues[i]->nb_pieces));
+        issues[i] = new_game(game_width(g),game_height(g),game_nb_pieces(g),game_pieces_copy(g));
     }
 
     int i=0;
@@ -183,41 +230,21 @@ game* get_issues(game g){
 
         if(can_move_x(current)){
             if(is_move_allowed(g,current,LEFT)){
-                printf("Avant le de bouger la piece %d\n",i);
-                display(g);
                 play_move(issues[i],piecenum,LEFT,1);
-                printf("Et juste apres\n");
-                display(g);
-                display(issues[i]);
                 i++;
             }
             if(is_move_allowed(g,current,RIGHT)){
-                printf("Avant le de bouger la piece %d\n",i);
-                display(g);
                 play_move(issues[i],piecenum,RIGHT,1);
-                printf("Et juste apres\n");
-                display(g);
-                display(issues[i]);
                 i++;
             }
         }
         if(can_move_y(current)){
             if(is_move_allowed(g,current,DOWN)) {
-                printf("Avant le de bouger la piece %d\n",i);
-                display(g);
                 play_move(issues[i],piecenum,DOWN,1);
-                printf("Et juste apres\n");
-                display(g);
-                display(issues[i]);
                 i++;
             }
             if(is_move_allowed(g,current,UP)) {
-                printf("Avant le de bouger la piece %d\n",i);
-                display(g);
                 play_move(issues[i],piecenum,UP,1);
-                printf("Et juste apres\n");
-                display(g);
-                display(issues[i]);
                 i++;
             }
         }

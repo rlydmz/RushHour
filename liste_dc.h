@@ -4,26 +4,63 @@
 #include <stdbool.h>
 #include "game.h"
 
-typedef struct ListElem ListElem;
-struct ListElem{
+typedef struct ListElem_game ListElem_game;
+typedef struct ListElem_list ListElem_list;
+typedef struct ListeDC_game ListeDC_game;
+typedef struct ListeDC_list ListeDC_list;
+
+struct ListeDC_game{
+    ListElem_game *first;
+    ListElem_game *last;
+};
+
+
+struct ListeDC_list{
+    ListElem_list *first;
+    ListElem_list *last;
+};
+
+
+struct ListElem_game{
     game g;
-    ListElem *next;
-    ListElem *prev;
+    ListElem_game *next;
+    ListElem_game *prev;
 };
 
-typedef struct ListeDC ListeDC;
-struct ListeDC{
-    ListElem *first;
-    ListElem *last;
+
+struct ListElem_list{
+    ListeDC_game* liste;
+    ListElem_list *next;
+    ListElem_list *prev;
+
 };
 
-ListeDC *init_list();
-void insert_first(ListeDC *liste, game g);
-void insert_last(ListeDC *liste, game g);
-void delete_first(ListeDC *liste);
-void delete_last(ListeDC *liste);
-game get_first(ListeDC *liste);
-game get_last(ListeDC *liste);
-game get_element_from_first(ListeDC *liste, int index);
-game get_element_from_last(ListeDC *liste, int index);
-int get_size(ListeDC* liste);
+// Liste DC contenant des game
+
+ListeDC_game *init_list_game(game g);
+void insert_first_game(ListeDC_game *liste, game g);
+void insert_last_game(ListeDC_game *liste, game g);
+void delete_first_game(ListeDC_game *liste);
+void delete_last_game(ListeDC_game *liste);
+game get_first_game(ListeDC_game *liste);
+game get_last_game(ListeDC_game *liste);
+game get_element_from_first_game(ListeDC_game *liste, int index);
+game get_element_from_last_game(ListeDC_game *liste, int index);
+int get_size_gamelist(ListeDC_game* liste);
+bool is_game_inlist(cgame g, ListeDC_game* liste);
+ListeDC_game* clone_list_game(ListeDC_game* liste);
+
+
+// Liste DC contenant des listes DC contenant des game
+
+ListeDC_list *init_list_list(ListeDC_game* liste);
+void insert_first_list(ListeDC_list *liste, ListeDC_game* gamelist);
+void insert_last_list(ListeDC_list *liste, ListeDC_game* gamelist);
+void delete_first_list(ListeDC_list *liste);
+void delete_last_list(ListeDC_list *liste);
+ListeDC_game* get_first_list(ListeDC_list *liste);
+ListeDC_game* get_last_list(ListeDC_list *liste);
+ListeDC_game* get_element_from_first_list(ListeDC_list *liste, int index);
+ListeDC_game* get_element_from_last_list(ListeDC_list *liste, int index);
+int get_size_listlist(ListeDC_list* liste);
+
